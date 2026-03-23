@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment variables (NEVER commit this)
+.env
+server/.env
+
+# Build output
+dist/
+client/dist/
+
+# Vite cache
+client/.vite/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads (evidence files should not be in git)
+server/uploads/
+
+# Logs
+*.log
