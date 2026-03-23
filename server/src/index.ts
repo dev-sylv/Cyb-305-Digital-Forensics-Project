@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes";
+import evidenceRoutes from "./routes/evidenceRoutes";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/evidence", evidenceRoutes);
 
 // Health check
 app.get("/chainlock", (_req, res) => {
