@@ -4,6 +4,7 @@ import {
   listEvidence,
   getEvidence,
   verifyEvidence,
+  getAuditTrail,
 } from "../controllers/evidenceController";
 import requireAuth from "../middleware/requireAuth";
 import requireRole from "../middleware/requireRole";
@@ -19,5 +20,6 @@ router.post(
   requireRole("verifier"),
   verifyEvidence,
 );
+router.get("/:id/audit", requireAuth, getAuditTrail);
 
 export default router;

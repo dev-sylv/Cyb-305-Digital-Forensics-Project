@@ -1,3 +1,7 @@
+// APPEND-ONLY COLLECTION.
+// This schema intentionally does not expose update or delete methods.
+// All audit events are permanent once created.
+
 import mongoose, { Schema, Document } from "mongoose";
 import { AuditEventType } from "shared/types";
 

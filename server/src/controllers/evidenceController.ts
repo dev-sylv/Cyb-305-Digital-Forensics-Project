@@ -3,9 +3,9 @@ import path from "path";
 import upload from "../config/multerConfig";
 import { computeHash } from "../services/hashService";
 import { analyze } from "../services/expertSystem";
-import { logEvent } from "../services/auditService";
 import EvidenceRecord from "../models/evidenceRecord";
 import { AuditEventType } from "shared/types";
+import { logEvent, getTimeline } from "../services/auditService";
 
 // POST /api/evidence
 export const submitEvidence = [
@@ -145,12 +145,16 @@ export const verifyEvidence = async (
     metadata: { computedHash, storedHash, match },
   });
 
-  res
-    .status(200)
-    .json({
-      status: match ? "verified" : "tampered",
-      computedHash,
-      storedHash,
-      match,
-    });
+  res.status(200).json({
+    status: match ? "verified" : "tampered",
+    computedHash,
+    storedHash,
+    match,
+  });
+};
+
+// GET /api/evidence/:id/audit
+export const getAuditTrail = async (req: any, res: Response): Promise<void> => {
+  const events = await getTimeline(req.params.id);
+  res.status(200).json(events);
 };
