@@ -105,3 +105,52 @@ export const getEvidence = async (
 
   res.status(200).json(record);
 };
+
+// POST /api/evidence/:id/verify
+export const verifyEvidence = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  // Find the evidence record
+  const record = await EvidenceRecord.findById(req.params.id);
+  if (!record) {
+    res.status(404).json({ error: "Evidence not found" });
+    return;
+  }
+
+  // Two-actor rule — verifier cannot be the same person who submitted
+  if (req.user.userId === record.submittedBy.toString()) {
+    res.status(409).json({
+      error:
+        "Conflict of interest: you cannot verify evidence you submitted. A different verifier must perform this action.",
+    });
+    return;
+  }
+
+  // Recompute hash from disk — never use cached values
+  const computedHash = await computeHash(record.filePath);
+  const storedHash = record.sha256Hash;
+  const match = computedHash === storedHash;
+
+  // Update integrity status
+  record.integrityStatus = match ? "verified" : "tampered";
+  await record.save();
+
+  // Write audit event
+  await logEvent({
+    evidenceId: record._id.toString(),
+    eventType: match ? AuditEventType.VERIFIED : AuditEventType.TAMPER_DETECTED,
+    actorId: req.user.userId,
+    actorName: req.user.fullName,
+    metadata: { computedHash, storedHash, match },
+  });
+
+  res
+    .status(200)
+    .json({
+      status: match ? "verified" : "tampered",
+      computedHash,
+      storedHash,
+      match,
+    });
+};

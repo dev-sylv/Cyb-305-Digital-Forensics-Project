@@ -1,5 +1,3 @@
-# chainlock
-
 # ChainLock — Secure Digital Evidence Collection System
 
 **CYB 305 - Digital Forensics | Group 6 | March 2026**
