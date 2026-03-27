@@ -33,6 +33,7 @@ export interface User {
 }
 
 export interface EvidenceRecord {
+  _id?: string;
   id: string;
   caseId: string;
   fileName: string;
@@ -49,7 +50,6 @@ export interface EvidenceRecord {
   integrityStatus: string;
   notes?: string;
 }
-
 export interface AuditEvent {
   id: string;
   evidenceId: string;

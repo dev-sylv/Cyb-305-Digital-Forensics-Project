@@ -6,6 +6,7 @@ import HashDisplay from "../components/hashDisplay";
 import IntegrityBadge from "../components/integrityBadge";
 import ExpertSystemPanel from "../components/expertSystemPanel";
 import NavBar from "../components/navBar";
+import VerificationPanel from "../components/verificationPanel";
 
 const EvidenceDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +14,7 @@ const EvidenceDetailPage = () => {
   const [auditEvents, setAuditEvents] = useState<AuditEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [integrityStatus, setIntegrityStatus] = useState<string>("");
 
   useEffect(() => {
     if (!id) return;
@@ -20,6 +22,7 @@ const EvidenceDetailPage = () => {
       .then(([rec, events]) => {
         setRecord(rec);
         setAuditEvents(events);
+        setIntegrityStatus(rec.integrityStatus);
       })
       .catch(() => setError("Failed to load evidence"))
       .finally(() => setLoading(false));
@@ -80,7 +83,9 @@ const EvidenceDetailPage = () => {
             <div>
               <span style={styles.label}>Integrity Status</span>
               <p style={styles.value}>
-                <IntegrityBadge status={record.integrityStatus} />
+                <IntegrityBadge
+                  status={integrityStatus || record.integrityStatus}
+                />
               </p>
             </div>
           </div>
@@ -95,13 +100,12 @@ const EvidenceDetailPage = () => {
         {/* Expert System */}
         <ExpertSystemPanel result={record.expertSystemResult} />
 
-        {/* Verification Panel placeholder — added in TASK-4B */}
-        <div style={{ ...styles.card, marginTop: "20px" }}>
-          <h3 style={styles.cardTitle}>Verification</h3>
-          <p style={{ color: "#64748b", fontSize: "14px" }}>
-            Verification panel coming in TASK-4B.
-          </p>
-        </div>
+        <VerificationPanel
+          evidenceId={String(record._id || "")}
+          onVerified={(result) => {
+            setIntegrityStatus(result.status);
+          }}
+        />
 
         {/* Audit Trail placeholder — added in TASK-5B */}
         <div style={{ ...styles.card, marginTop: "20px" }}>

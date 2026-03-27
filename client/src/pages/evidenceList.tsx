@@ -51,7 +51,7 @@ const EvidenceListPage = () => {
                   <tr key={r.id} style={styles.tr}>
                     <td style={styles.td}>{r.caseId}</td>
                     <td style={styles.td}>
-                      <Link to={`/evidence/${r.id}`} style={styles.link}>
+                      <Link to={`/evidence/${r._id}`} style={styles.link}>
                         {r.fileName}
                       </Link>
                     </td>
