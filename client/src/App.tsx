@@ -3,6 +3,9 @@ import { AuthProvider } from "./components/authProvider";
 import ProtectedRoute from "./components/protectedRoute";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+import UploadPage from "./pages/uploadPage";
+import EvidenceListPage from "./pages/evidenceList";
+import EvidenceDetailPage from "./pages/evidenceDetailedPage";
 
 function App() {
   return (
@@ -13,7 +16,9 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route element={<ProtectedRoute />}>
-            {/* Evidence routes added in TASK-2B */}
+            <Route path="/evidence" element={<EvidenceListPage />} />
+            <Route path="/evidence/:id" element={<EvidenceDetailPage />} />
+            <Route path="/upload" element={<UploadPage />} />
           </Route>
         </Routes>
       </AuthProvider>

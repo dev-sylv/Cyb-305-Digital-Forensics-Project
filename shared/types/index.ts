@@ -40,11 +40,13 @@ export interface EvidenceRecord {
   fileSize: number;
   filePath: string;
   sha256Hash: string;
-  submittedBy: string;
+  submittedBy:
+    | string
+    | { _id: string; fullName: string; email: string; role: string };
   submittedAt: Date;
   currentCustodian: string;
   expertSystemResult: ExpertSystemResult;
-  integrityStatus: IntegrityStatus;
+  integrityStatus: string;
   notes?: string;
 }
 
