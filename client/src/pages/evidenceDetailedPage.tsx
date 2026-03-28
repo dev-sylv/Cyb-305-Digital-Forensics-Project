@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { EvidenceRecord, AuditEvent } from "shared/types";
-import {
-  getEvidence,
-  getAuditTrail,
-  verifyEvidence,
-} from "../services/evidenceService";
+import { getEvidence, getAuditTrail } from "../services/evidenceService";
 import HashDisplay from "../components/hashDisplay";
 import IntegrityBadge from "../components/integrityBadge";
 import ExpertSystemPanel from "../components/expertSystemPanel";
 import NavBar from "../components/navBar";
 import VerificationPanel from "../components/verificationPanel";
-import AuditTimeline from "../components/AuditTimeline";
+import AuditTimeline from "../components/auditTimeline";
 
 const EvidenceDetailPage = () => {
   const { id } = useParams<{ id: string }>();

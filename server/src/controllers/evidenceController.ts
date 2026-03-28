@@ -6,6 +6,7 @@ import { analyze } from "../services/expertSystem";
 import EvidenceRecord from "../models/evidenceRecord";
 import { AuditEventType } from "shared/types";
 import { logEvent, getTimeline } from "../services/auditService";
+import fs from "fs";
 
 // POST /api/evidence
 export const submitEvidence = [
@@ -107,18 +108,18 @@ export const getEvidence = async (
 };
 
 // POST /api/evidence/:id/verify
+
 export const verifyEvidence = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  // Find the evidence record
   const record = await EvidenceRecord.findById(req.params.id);
   if (!record) {
     res.status(404).json({ error: "Evidence not found" });
     return;
   }
 
-  // Two-actor rule — verifier cannot be the same person who submitted
+  // Two-actor rule
   if (req.user.userId === record.submittedBy.toString()) {
     res.status(409).json({
       error:
@@ -127,16 +128,39 @@ export const verifyEvidence = async (
     return;
   }
 
-  // Recompute hash from disk — never use cached values
+  // Check if file still exists on disk
+  if (!fs.existsSync(record.filePath)) {
+    record.integrityStatus = "tampered";
+    await record.save();
+
+    await logEvent({
+      evidenceId: record._id.toString(),
+      eventType: AuditEventType.TAMPER_DETECTED,
+      actorId: req.user.userId,
+      actorName: req.user.fullName,
+      metadata: {
+        reason: "File missing from disk",
+        storedHash: record.sha256Hash,
+      },
+    });
+
+    res.status(200).json({
+      status: "tampered",
+      computedHash: "FILE NOT FOUND ON DISK",
+      storedHash: record.sha256Hash,
+      match: false,
+    });
+    return;
+  }
+
+  // Recompute hash from disk
   const computedHash = await computeHash(record.filePath);
   const storedHash = record.sha256Hash;
   const match = computedHash === storedHash;
 
-  // Update integrity status
   record.integrityStatus = match ? "verified" : "tampered";
   await record.save();
 
-  // Write audit event
   await logEvent({
     evidenceId: record._id.toString(),
     eventType: match ? AuditEventType.VERIFIED : AuditEventType.TAMPER_DETECTED,
