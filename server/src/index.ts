@@ -2,14 +2,30 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import path from "path";
+import fs from "fs";
 import authRoutes from "./routes/authRoutes";
 import evidenceRoutes from "./routes/evidenceRoutes";
-import { Request, Response, NextFunction } from "express";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(process.cwd(), "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Middleware
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  }),
+);
+app.use(express.json());
 
 // MongoDB connection
 mongoose
@@ -17,40 +33,37 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Middleware
-app.use(cors({ origin: "http://localhost:5173" }));
-app.use(express.json());
-
+// Routes
 app.use("/api/auth", authRoutes);
-
 app.use("/api/evidence", evidenceRoutes);
 
 // Health check
-app.get("/chainlock", (_req, res) => {
-  res.json({ status: "Chain Lock server up and running" });
+app.get("/api/chainlock", (_req, res) => {
+  res.json({ status: "ok" });
 });
 
-// Global error handler — must be last middleware
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err);
-
-  // Handle Multer errors specifically
-  if (err.name === "MulterError") {
-    if (err.message === "File too large") {
-      return res.status(413).json({ error: "File exceeds 20MB limit" });
+// Global error handler — must be last
+app.use(
+  (
+    err: Error,
+    _req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction,
+  ) => {
+    console.error(err);
+    if (err.name === "MulterError") {
+      if (err.message === "File too large") {
+        return res.status(413).json({ error: "File exceeds 20MB limit" });
+      }
+      return res.status(400).json({ error: err.message });
     }
-    return res.status(400).json({ error: err.message });
-  }
+    if (err.message === "Unsupported file type") {
+      return res.status(400).json({ error: "Unsupported file type" });
+    }
+    res.status(500).json({ error: "Internal server error" });
+  },
+);
 
-  // Handle unsupported file type from fileFilter
-  if (err.message === "Unsupported file type") {
-    return res.status(400).json({ error: "Unsupported file type" });
-  }
-
-  res.status(500).json({ error: "Internal server error" });
-});
-
-// Start server
 app.listen(PORT, () => {
   console.log(`ChainLock server running on port ${PORT}`);
 });
