@@ -17,14 +17,13 @@ const uploadsDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
-
-// Middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: ["https://chainlock-app.vercel.app", "http://localhost:5173"],
     credentials: true,
   }),
 );
+
 app.use(express.json());
 
 // MongoDB connection
@@ -37,7 +36,6 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/evidence", evidenceRoutes);
 
-// Health check
 app.get("/api/chainlock", (_req, res) => {
   res.json({ status: "ok" });
 });
