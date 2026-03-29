@@ -1,4 +1,4 @@
-import { ExpertSystemResult } from "shared/types";
+import { ExpertSystemResult } from "../types";
 
 interface Props {
   result: ExpertSystemResult;

@@ -1,4 +1,4 @@
-import { ExpertSystemResult } from "shared/types";
+import { ExpertSystemResult } from "../../types";
 import { Rule, FileMeta } from "./types";
 import { imageRules } from "./rules/imageRules";
 import { textRules } from "./rules/textRules";

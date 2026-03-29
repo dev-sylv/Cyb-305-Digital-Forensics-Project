@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { IntegrityStatus } from "shared/types";
+import { IntegrityStatus } from "../types";
 
 export interface IEvidenceRecord extends Document {
   caseId: string;

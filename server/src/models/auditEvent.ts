@@ -3,7 +3,7 @@
 // All audit events are permanent once created.
 
 import mongoose, { Schema, Document } from "mongoose";
-import { AuditEventType } from "shared/types";
+import { AuditEventType } from "../types";
 
 export interface IAuditEvent extends Document {
   evidenceId: mongoose.Types.ObjectId;

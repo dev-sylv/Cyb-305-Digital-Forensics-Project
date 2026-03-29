@@ -1,4 +1,4 @@
-import { Verdict } from "shared/types";
+import { Verdict } from "../../types";
 
 /**
  * Represents a rule that was triggered during analysis.

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { EvidenceRecord } from "shared/types";
+import { EvidenceRecord } from "../types";
 import { listEvidence } from "../services/evidenceService";
 import IntegrityBadge from "../components/integrityBadge";
 import NavBar from "../components/navBar";

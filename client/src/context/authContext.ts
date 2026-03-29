@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { User } from "shared/types";
+import { User } from "../types";
 
 export interface AuthState {
   token: string | null;

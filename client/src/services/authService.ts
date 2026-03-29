@@ -1,5 +1,5 @@
 import api from "./api";
-import { User } from "shared/types";
+import { User } from "../types";
 
 interface RegisterPayload {
   fullName: string;

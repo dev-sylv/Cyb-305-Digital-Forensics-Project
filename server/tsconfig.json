@@ -1,9 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "shared/*": ["../shared/dist/*"]
-    },
     "target": "es2020",
     "module": "commonjs",
     "lib": ["es2020"],

@@ -1,5 +1,5 @@
 import api from "./api";
-import { EvidenceRecord, AuditEvent } from "shared/types";
+import { EvidenceRecord, AuditEvent } from "../types";
 
 interface VerifyResult {
   status: string;

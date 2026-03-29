@@ -1,4 +1,4 @@
-import { AuditEvent, AuditEventType } from "shared/types";
+import { AuditEvent, AuditEventType } from "../types";
 
 interface Props {
   events: AuditEvent[];

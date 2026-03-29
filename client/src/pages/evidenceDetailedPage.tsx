@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { EvidenceRecord, AuditEvent } from "shared/types";
+import { EvidenceRecord, AuditEvent } from "../types";
 import { getEvidence, getAuditTrail } from "../services/evidenceService";
 import HashDisplay from "../components/hashDisplay";
 import IntegrityBadge from "../components/integrityBadge";

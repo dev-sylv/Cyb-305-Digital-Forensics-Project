@@ -4,7 +4,7 @@ import upload from "../config/multerConfig";
 import { computeHash } from "../services/hashService";
 import { analyze } from "../services/expertSystem";
 import EvidenceRecord from "../models/evidenceRecord";
-import { AuditEventType } from "shared/types";
+import { AuditEventType } from "../types";
 import { logEvent, getTimeline } from "../services/auditService";
 import fs from "fs";
 

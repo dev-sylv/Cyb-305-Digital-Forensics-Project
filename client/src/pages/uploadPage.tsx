@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { EvidenceRecord } from "shared/types";
+import { EvidenceRecord } from "../types";
 import { submitEvidence } from "../services/evidenceService";
 import HashDisplay from "../components/hashDisplay";
 import ExpertSystemPanel from "../components/expertSystemPanel";

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import AuditEvent, { IAuditEvent } from "../models/auditEvent";
-import { AuditEventType } from "shared/types";
+import { AuditEventType } from "../types";
 
 interface LogEventData {
   evidenceId: any;
