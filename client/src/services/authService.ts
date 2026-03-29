@@ -15,13 +15,16 @@ interface LoginResponse {
 }
 
 export const registerUser = async (data: RegisterPayload): Promise<void> => {
-  await api.post("/auth/register", data);
+  await api.post("api/auth/register", data);
 };
 
 export const loginUser = async (
   email: string,
   password: string,
 ): Promise<LoginResponse> => {
-  const res = await api.post<LoginResponse>("/auth/login", { email, password });
+  const res = await api.post<LoginResponse>("api/auth/login", {
+    email,
+    password,
+  });
   return res.data;
 };

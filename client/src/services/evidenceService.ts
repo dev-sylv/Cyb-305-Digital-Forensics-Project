@@ -13,7 +13,7 @@ export const submitEvidence = async (
   caseId: string,
 ): Promise<EvidenceRecord> => {
   const res = await api.post<EvidenceRecord>(
-    `/evidence?caseId=${caseId}`,
+    `api/evidence?caseId=${caseId}`,
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -23,21 +23,21 @@ export const submitEvidence = async (
 };
 
 export const listEvidence = async (): Promise<EvidenceRecord[]> => {
-  const res = await api.get<EvidenceRecord[]>("/evidence");
+  const res = await api.get<EvidenceRecord[]>("api/evidence");
   return res.data;
 };
 
 export const getEvidence = async (id: string): Promise<EvidenceRecord> => {
-  const res = await api.get<EvidenceRecord>(`/evidence/${id}`);
+  const res = await api.get<EvidenceRecord>(`api/evidence/${id}`);
   return res.data;
 };
 
 export const getAuditTrail = async (id: string): Promise<AuditEvent[]> => {
-  const res = await api.get<AuditEvent[]>(`/evidence/${id}/audit`);
+  const res = await api.get<AuditEvent[]>(`api/evidence/${id}/audit`);
   return res.data;
 };
 
 export const verifyEvidence = async (id: string): Promise<VerifyResult> => {
-  const res = await api.post<VerifyResult>(`/evidence/${id}/verify`);
+  const res = await api.post<VerifyResult>(`api/evidence/${id}/verify`);
   return res.data;
 };
